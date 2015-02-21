@@ -14,3 +14,18 @@ var sound = new Howl({
     onloaderror: function() { alert("Failed to load audio file 'scale.wav'");}
 });
 
+// Extra junk, delete me
+var sound2 = new Howl({
+    urls: ['scale-voice.wav'],
+    sprite: {
+        0: [0,250],
+        1: [250,250],
+        2: [750.250],
+        3: [1250,250],
+        4: [1750,250]
+    },
+    buffer: false,
+    onloaderror: function() { alert("Failed to load audio file 'scale.wav'");}
+});
+
+
