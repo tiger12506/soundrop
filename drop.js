@@ -59,6 +59,7 @@ function init() {
         else if (e.button==0) {
             if (lineStart) {
                 scene.lines[scene.lines.length] = new Line(lineHalfx, lineHalfy, e.pageX, e.pageY);
+                scene.lines[scene.lines.length-1].ding();
                 lineStart = false;
             }
             else if (!lineStart) {

@@ -68,6 +68,8 @@ function Line(x1, y1, x2, y2) {
     this.y2 = y2;
     this.r = 3;
     this.length = Math.sqrt(Math.pow(this.x2-this.x1, 2) + Math.pow(this.y2-this.y1, 2));
+    this.max = canvas.width;
+    this.min = 1;
 
     this.draw = function (context) {
         context.moveTo(this.x1+this.r, this.y1);
@@ -79,8 +81,8 @@ function Line(x1, y1, x2, y2) {
     }
 
     this.ding = function () {
-        var splen = sound.sprite.length;
-        var index = splen-Math.floor(this.length * splen / scene.width);
+        var count = 8;
+        var index = count - Math.ceil(this.length / (this.max-this.min) * count);
         sound.play(""+index);
     }
 }
