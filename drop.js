@@ -35,7 +35,9 @@ function display() {
 
     context.closePath();
     context.stroke();
-    
+
+    hittest();
+
     setTimeout(display, refreshRate);
 }
 
@@ -43,6 +45,18 @@ function display_clear() {
     context.clearRect(0, 0, canvas.width, canvas.height);
     context.fillStyle='#fff';
     context.fillRect(0, 0, canvas.width, canvas.height);
+}
+
+function hittest() {
+    var i,j;
+    for (i=scene.balls.length-1; i>=0; i--) {
+        for (j=scene.lines.length-1; j>=0; j--) {
+            if (scene.balls[i].checkWillIntersect(scene.lines[j])) {
+                scene.balls[i].bounceOffLine(scene.lines[j]);
+                scene.lines[j].ding();
+            }
+        }
+    }
 }
 
 var lineStart = false;

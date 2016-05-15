@@ -27,8 +27,28 @@ function Ball(x, y, dx, dy) {
         return false;
     }
 
-    this.checkIntersects = function (scene) {
-        
+    this.checkWillIntersect = function (line) {
+        var before = (line.y2-line.y1) * this.x - (line.x2-line.x1) * this.y + line.x2 * line.y1 - line.y2 * line.x1;
+        var after = (line.y2-line.y1) * (this.x+this.dx) - (line.x2-line.x1) * (this.y+this.dy) + line.x2 * line.y1 - line.y2 * line.x1;
+
+        before = Math.abs(before / line.length);
+        after = Math.abs(after / line.length);
+
+        if (before > this.r && after <= this.r) return true;
+        return false;
+    }
+
+    this.bounceOffLine = function(line) {
+        // To find normal, get vector of line segment, swap x and y and negate y
+        // Get vector of line segment with magnitude one by dividing by hypot, or length
+        var nx = (line.y2 - line.y1) / line.length;
+        var ny = -(line.x2 - line.x1) / line.length;
+
+        // Complicated calculation for reflection of vector (ball velocity) across arbitrary line
+        // v' = v - 2 * dot(v, N) * N
+        var dot = (this.dx * nx + this.dy * ny);
+        this.dx = this.dx - 2 * dot * nx;
+        this.dy = this.dy - 2 * dot * ny;
     }
 }
 
@@ -51,7 +71,7 @@ function Dropper(x, y, interval, scene) {
 
     this.start = function () {
         var self = this;
-        this.timer = setInterval(function () { self.dropBall(self.scene); }, this.interval); 
+        this.timer = setInterval(function () { self.dropBall(self.scene); }, this.interval);
     }
 
     this.stop = function () {
