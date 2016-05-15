@@ -1,4 +1,5 @@
-var refreshRate = 20;
+var refreshRate = 45;
+var gravity = 10 / refreshRate;
 var canvas = document.getElementById('HTMLCanvas');
 var context = canvas.getContext('2d');
 

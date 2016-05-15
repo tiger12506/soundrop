@@ -5,7 +5,6 @@ function Ball(x, y, dx, dy) {
     this.nom_dy = dy;
     this.dy = dy;
     this.r = 5;
-    this.gravity = 2;
 
     this.draw = function (context) {
         context.moveTo(this.x+this.r, this.y);
@@ -18,7 +17,7 @@ function Ball(x, y, dx, dy) {
     }
 
     this.applyGravity = function () {
-        this.dy += this.gravity;
+        this.dy += gravity;
     }
 
     this.isNowDead = function (scene) {
