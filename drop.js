@@ -18,8 +18,8 @@ function display() {
         scene.balls[i].update();
         if (scene.balls[i].isNowDead(scene)) {
             dead[dead.length] = i;
+            continue;
         }
-        continue;
         scene.balls[i].applyGravity();
         scene.balls[i].draw(context);
     }

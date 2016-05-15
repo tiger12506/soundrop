@@ -107,7 +107,7 @@ function Line(x1, y1, x2, y2) {
     }
 
     this.intersects = function (x, y, thickness) {
-        var distance = (this.y2-this.y1) * x - (this.x2-this.x1) * y + this.x2 * this.y1 - this.y2 * this.x1;
+        var distance = Math.abs((this.y2-this.y1) * x - (this.x2-this.x1) * y + this.x2 * this.y1 - this.y2 * this.x1) / this.length;
         if (distance < thickness) return true;
         return false;
     }
