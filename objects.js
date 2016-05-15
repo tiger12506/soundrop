@@ -33,7 +33,19 @@ function Ball(x, y, dx, dy) {
         after = Math.abs(after / line.length);
 
         if (before <= this.r) {
-            return true;
+            // ball is close to line, now check if within bounds of line *segment*
+
+            var ax = (line.x2 - line.x1);
+            var ay = (line.y2 - line.y1);
+
+            var bx = (this.x - line.x1);
+            var by = (this.y - line.y1);
+
+            var cx = (line.x2 - this.x);
+            var cy = (line.y2 - this.y);
+
+            if (ax*bx + ay*by > 0 && ax*cx + ay*cy <0) return true;
+            return false;
         }
         return false;
     }
