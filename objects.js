@@ -105,5 +105,11 @@ function Line(x1, y1, x2, y2) {
         var index = count - Math.ceil(this.length / (this.max-this.min) * count);
         sound.play(""+index);
     }
+
+    this.intersects = function (x, y, thickness) {
+        var distance = (this.y2-this.y1) * x - (this.x2-this.x1) * y + this.x2 * this.y1 - this.y2 * this.x1;
+        if (distance < thickness) return true;
+        return false;
+    }
 }
 
