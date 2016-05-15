@@ -85,6 +85,8 @@ function init() {
             else if (lineMove) {
                 var xMove = droppedPoint['x'] - e.pageX;
                 var yMove = droppedPoint['y'] - e.pageY;
+                xMove = Math.abs(xMove) > thickness ? xMove : 0;
+                yMove = Math.abs(yMove) > thickness ? yMove : 0;
                 lineMove.x1 -= xMove;
                 lineMove.x2 -= xMove;
                 lineMove.y1 -= yMove;
@@ -94,18 +96,22 @@ function init() {
             else {
                 lineHalfx = e.pageX;
                 lineHalfy = e.pageY;
-                for (var i = 0; i < scene.lines.length; i++) {
-                    if (scene.lines[i].intersects(e.pageX, e.pageY, thickness)) {
-                        droppedPoint['x'] = e.pageX;
-                        droppedPoint['y'] = e.pageY;
-                        lineMove = scene.lines[i];
-                        return;
-                    }
-                }
                 lineStart = true;
             }
         }
     };
+
+    document.onmousedown = function(e) {
+        if (e.button == 0) {
+            for (var i = 0; i < scene.lines.length; i++) {
+                if (scene.lines[i].intersects(e.pageX, e.pageY, thickness)) {
+                    droppedPoint['x'] = e.pageX;
+                    droppedPoint['y'] = e.pageY;
+                    lineMove = scene.lines[i];
+                }
+            }
+        }
+    }
 
     document.ondblclick = function(e) {
         dead = [];
