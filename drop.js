@@ -61,6 +61,8 @@ function hittest() {
 }
 
 var lineStart = false;
+var lineMove = null;
+var droppedPoint = {};
 var lineHalfx, lineHalfy;
 function init() {
     var thickness = 30; //test thickness
@@ -77,26 +79,45 @@ function init() {
                 if (Math.pow(lineHalfx - e.pageX, 2) + Math.pow(lineHalfy - e.pageY, 2) > Math.pow(thickness, 2)) {
                     scene.lines[scene.lines.length] = new Line(lineHalfx, lineHalfy, e.pageX, e.pageY);
                     scene.lines[scene.lines.length-1].ding();
-                } else {
-                    dead = [];
-                    for (var i = 0; i < scene.lines.length; i++) {
-                        if (scene.lines[i].intersects(e.pageX, e.pageY, thickness)) {
-                            dead[dead.length] = i;
-                        }
-                    }
-                    for (var i = dead.length-1; i >= 0; i--) {
-                        scene.lines.splice(dead[i], 1);
-                    }
                 }
                 lineStart = false;
             }
-            else if (!lineStart) {
+            else if (lineMove) {
+                var xMove = droppedPoint['x'] - e.pageX;
+                var yMove = droppedPoint['y'] - e.pageY;
+                lineMove.x1 -= xMove;
+                lineMove.x2 -= xMove;
+                lineMove.y1 -= yMove;
+                lineMove.y2 -= yMove;
+                lineMove = null;
+            }
+            else {
                 lineHalfx = e.pageX;
                 lineHalfy = e.pageY;
+                for (var i = 0; i < scene.lines.length; i++) {
+                    if (scene.lines[i].intersects(e.pageX, e.pageY, thickness)) {
+                        droppedPoint['x'] = e.pageX;
+                        droppedPoint['y'] = e.pageY;
+                        lineMove = scene.lines[i];
+                        return;
+                    }
+                }
                 lineStart = true;
             }
         }
     };
+
+    document.ondblclick = function(e) {
+        dead = [];
+        for (var i = 0; i < scene.lines.length; i++) {
+            if (scene.lines[i].intersects(e.pageX, e.pageY, thickness)) {
+                dead[dead.length] = i;
+            }
+        }
+        for (var i = dead.length-1; i >= 0; i--) {
+            scene.lines.splice(dead[i], 1);
+        }
+    }
 }
 
 init();
