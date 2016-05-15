@@ -29,11 +29,12 @@ function Ball(x, y, dx, dy) {
     this.checkWillIntersect = function (line) {
         var before = (line.y2-line.y1) * this.x - (line.x2-line.x1) * this.y + line.x2 * line.y1 - line.y2 * line.x1;
         var after = (line.y2-line.y1) * (this.x+this.dx) - (line.x2-line.x1) * (this.y+this.dy) + line.x2 * line.y1 - line.y2 * line.x1;
-
         before = Math.abs(before / line.length);
         after = Math.abs(after / line.length);
 
-        if (before > this.r && after <= this.r) return true;
+        if (before <= this.r) {
+            return true;
+        }
         return false;
     }
 
