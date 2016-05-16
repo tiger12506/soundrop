@@ -63,7 +63,7 @@ var lineMove = null;
 var droppedPoint = {};
 var lineHalfx, lineHalfy;
 function init() {
-    var thickness = 5; //test thickness
+    var thickness = 10; //test thickness
     setTimeout(display, refreshRate);
     scene.width = canvas.width;
     scene.height = canvas.height;
@@ -80,7 +80,7 @@ function init() {
                 }
                 lineStart = false;
             }
-            else if (lineMove) {
+            else if (lineMove != null) {
                 var xMove = droppedPoint['x'] - e.pageX;
                 var yMove = droppedPoint['y'] - e.pageY;
                 xMove = Math.abs(xMove) > thickness ? xMove : 0;
