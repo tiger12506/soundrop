@@ -12,7 +12,6 @@ function Ball(x, y, dx, dy) {
         context.beginPath();
         context.moveTo(this.x+this.r, this.y);
         context.arc(this.x, this.y, this.r, 0, 2*Math.PI);
-        context.closePath();
         context.stroke();
 
         context.strokeStyle = oldstroke;
@@ -85,7 +84,6 @@ function Dropper(x, y, interval, scene) {
         context.beginPath();
         context.moveTo(this.x+this.r, this.y);
         context.arc(this.x, this.y, this.r, 0, 2*Math.PI);
-        context.closePath();
         context.stroke();
 
         context.strokeStyle = oldstroke;
@@ -129,7 +127,6 @@ function Line(x1, y1, x2, y2) {
         context.lineTo(this.x2, this.y2);
         context.moveTo(this.x2+this.r, this.y2);
         context.arc(this.x2, this.y2, this.r, 0, 2*Math.PI);
-        context.closePath();
         context.stroke();
 
         context.strokeStyle = oldstroke;
