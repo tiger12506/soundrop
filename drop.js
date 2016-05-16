@@ -50,7 +50,7 @@ function hittest() {
     var i,j;
     for (i=scene.balls.length-1; i>=0; i--) {
         for (j=scene.lines.length-1; j>=0; j--) {
-            if (scene.balls[i].checkWillIntersect(scene.lines[j])) {
+            if (intersects(scene.balls[i].x, scene.balls[i].y, scene.lines[j], scene.balls[i].r)) {
                 scene.balls[i].bounceOffLine(scene.lines[j]);
                 scene.lines[j].ding();
             }
@@ -63,7 +63,7 @@ var lineMove = null;
 var droppedPoint = {};
 var lineHalfx, lineHalfy;
 function init() {
-    var thickness = 30; //test thickness
+    var thickness = 5; //test thickness
     setTimeout(display, refreshRate);
     scene.width = canvas.width;
     scene.height = canvas.height;
@@ -103,7 +103,7 @@ function init() {
     document.onmousedown = function(e) {
         if (e.button == 0) {
             for (var i = 0; i < scene.lines.length; i++) {
-                if (scene.lines[i].intersects(e.pageX, e.pageY, thickness)) {
+                if (intersects(e.pageX, e.pageY, scene.lines[i], thickness)) {
                     droppedPoint['x'] = e.pageX;
                     droppedPoint['y'] = e.pageY;
                     lineMove = scene.lines[i];
@@ -117,7 +117,7 @@ function init() {
     document.ondblclick = function(e) {
         dead = [];
         for (var i = 0; i < scene.lines.length; i++) {
-            if (scene.lines[i].intersects(e.pageX, e.pageY, thickness)) {
+            if (intersects(e.pageX, e.pageY, scene.lines[i], thickness)) {
                 dead[dead.length] = i;
             }
         }

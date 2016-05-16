@@ -32,31 +32,6 @@ function Ball(x, y, dx, dy) {
         return false;
     }
 
-    this.checkWillIntersect = function (line) {
-        var ax = (line.x2 - line.x1);
-        var ay = (line.y2 - line.y1);
-
-        var dist =  ay * this.x -  ax * this.y + line.x2 * line.y1 - line.y2 * line.x1;
-        dist = Math.abs(dist / line.length);
-
-        if (dist <= this.r) {
-            // ball is close to line, now check if within bounds of line *segment*
-
-            var bx = (this.x - line.x1);
-            var by = (this.y - line.y1);
-
-            var cx = (this.x - line.x2);
-            var cy = (this.y - line.y2);
-
-            var adotb = ax*bx + ay*by;
-            var adotc = ax*cx + ay*cy;
-
-            if (adotb > 0 && adotc < 0) return true;
-            return false;
-        }
-        return false;
-    }
-
     this.bounceOffLine = function(line) {
         // To find normal, get vector of line segment, swap x and y and negate y
         // Get vector of line segment with magnitude one by dividing by hypot, or length
@@ -139,11 +114,30 @@ function Line(x1, y1, x2, y2) {
         var index = count - Math.ceil(this.length / (this.max-this.min) * count);
         sound.play(""+index);
     }
-
-    this.intersects = function (x, y, thickness) {
-        var distance = Math.abs((this.y2-this.y1) * x - (this.x2-this.x1) * y + this.x2 * this.y1 - this.y2 * this.x1) / this.length;
-        if (distance < thickness) return true;
-        return false;
-    }
 }
 
+var intersects = function (x, y, line, dist) {
+    var ax = (line.x2 - line.x1);
+    var ay = (line.y2 - line.y1);
+
+    // distance from point to line formula, derived by dot product line to point vector against line's normal direction vector
+    var d =  ay * x -  ax * y + line.x2 * line.y1 - line.y2 * line.x1;
+    d = Math.abs(d / line.length);
+
+    if (d <= dist) {
+        // ball is close to line, now check if within bounds of line *segment*
+
+        var bx = (x - line.x1);
+        var by = (y - line.y1);
+
+        var cx = (x - line.x2);
+        var cy = (y - line.y2);
+
+        var adotb = ax*bx + ay*by;
+        var adotc = ax*cx + ay*cy;
+
+        if (adotb > 0 && adotc < 0) return true;
+        return false;
+    }
+    return false;
+}
