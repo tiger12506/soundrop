@@ -33,24 +33,25 @@ function Ball(x, y, dx, dy) {
     }
 
     this.checkWillIntersect = function (line) {
-        var before = (line.y2-line.y1) * this.x - (line.x2-line.x1) * this.y + line.x2 * line.y1 - line.y2 * line.x1;
-        var after = (line.y2-line.y1) * (this.x+this.dx) - (line.x2-line.x1) * (this.y+this.dy) + line.x2 * line.y1 - line.y2 * line.x1;
+        var ax = (line.x2 - line.x1);
+        var ay = (line.y2 - line.y1);
+
+        var before =  ay * this.x -  ax * this.y + line.x2 * line.y1 - line.y2 * line.x1;
         before = Math.abs(before / line.length);
+
+        var after = ay * (this.x+this.dx) - ax * (this.y+this.dy) + line.x2 * line.y1 - line.y2 * line.x1;
         after = Math.abs(after / line.length);
 
         if (before <= this.r) {
             // ball is close to line, now check if within bounds of line *segment*
 
-            var ax = (line.x2 - line.x1);
-            var ay = (line.y2 - line.y1);
-
             var bx = (this.x - line.x1);
             var by = (this.y - line.y1);
 
-            var cx = (line.x2 - this.x);
-            var cy = (line.y2 - this.y);
+            var cx = (this.x - line.x2);
+            var cy = (this.y - line.y2);
 
-            if (ax*bx + ay*by > 0 && ax*cx + ay*cy <0) return true;
+            if ((ax*bx + ay*by) > 0 && (ax*cx + ay*cy) < 0) return true;
             return false;
         }
         return false;
