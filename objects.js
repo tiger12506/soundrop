@@ -106,6 +106,7 @@ function Dropper(x, y, interval, scene) {
 }
 
 function Line(x1, y1, x2, y2) {
+    this.BASE_COLOR = '#0000FF';
     this.x1 = x1;
     this.x2 = x2;
     this.y1 = y1;
@@ -114,7 +115,7 @@ function Line(x1, y1, x2, y2) {
     this.length = Math.sqrt(Math.pow(this.x2-this.x1, 2) + Math.pow(this.y2-this.y1, 2));
     this.max = canvas.width;
     this.min = 1;
-    this.color = '#0000FF';
+    this.color = this.BASE_COLOR;
 
     this.draw = function (context) {
         var oldstroke = context.strokeStyle;

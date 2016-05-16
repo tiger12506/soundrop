@@ -89,6 +89,7 @@ function init() {
                 lineMove.x2 -= xMove;
                 lineMove.y1 -= yMove;
                 lineMove.y2 -= yMove;
+                lineMove.color = lineMove.BASE_COLOR;
                 lineMove = null;
             }
             else {
@@ -106,6 +107,8 @@ function init() {
                     droppedPoint['x'] = e.pageX;
                     droppedPoint['y'] = e.pageY;
                     lineMove = scene.lines[i];
+                    lineMove.color = '#B0171F';
+                    return;
                 }
             }
         }
