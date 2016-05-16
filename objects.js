@@ -36,13 +36,10 @@ function Ball(x, y, dx, dy) {
         var ax = (line.x2 - line.x1);
         var ay = (line.y2 - line.y1);
 
-        var before =  ay * this.x -  ax * this.y + line.x2 * line.y1 - line.y2 * line.x1;
-        before = Math.abs(before / line.length);
+        var dist =  ay * this.x -  ax * this.y + line.x2 * line.y1 - line.y2 * line.x1;
+        dist = Math.abs(dist / line.length);
 
-        var after = ay * (this.x+this.dx) - ax * (this.y+this.dy) + line.x2 * line.y1 - line.y2 * line.x1;
-        after = Math.abs(after / line.length);
-
-        if (before <= this.r) {
+        if (dist <= this.r) {
             // ball is close to line, now check if within bounds of line *segment*
 
             var bx = (this.x - line.x1);
@@ -51,7 +48,10 @@ function Ball(x, y, dx, dy) {
             var cx = (this.x - line.x2);
             var cy = (this.y - line.y2);
 
-            if ((ax*bx + ay*by) > 0 && (ax*cx + ay*cy) < 0) return true;
+            var adotb = ax*bx + ay*by;
+            var adotc = ax*cx + ay*cy;
+
+            if (adotb > 0 && adotc < 0) return true;
             return false;
         }
         return false;
