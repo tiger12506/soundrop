@@ -7,8 +7,15 @@ function Ball(x, y, dx, dy) {
     this.r = 5;
 
     this.draw = function (context) {
+        var oldstroke = context.strokeStyle;
+
+        context.beginPath();
         context.moveTo(this.x+this.r, this.y);
         context.arc(this.x, this.y, this.r, 0, 2*Math.PI);
+        context.closePath();
+        context.stroke();
+
+        context.strokeStyle = oldstroke;
     }
 
     this.update = function () {
@@ -73,8 +80,15 @@ function Dropper(x, y, interval, scene) {
     this.timer = null;
 
     this.draw = function (context) {
+        var oldstroke = context.strokeStyle;
+
+        context.beginPath();
         context.moveTo(this.x+this.r, this.y);
         context.arc(this.x, this.y, this.r, 0, 2*Math.PI);
+        context.closePath();
+        context.stroke();
+
+        context.strokeStyle = oldstroke;
     }
 
     this.dropBall = function (scene) {
@@ -102,14 +116,23 @@ function Line(x1, y1, x2, y2) {
     this.length = Math.sqrt(Math.pow(this.x2-this.x1, 2) + Math.pow(this.y2-this.y1, 2));
     this.max = canvas.width;
     this.min = 1;
+    this.color = '#0000FF';
 
     this.draw = function (context) {
+        var oldstroke = context.strokeStyle;
+
+        context.beginPath();
+        context.strokeStyle = this.color;
         context.moveTo(this.x1+this.r, this.y1);
         context.arc(this.x1, this.y1, this.r, 0, 2*Math.PI);
         context.moveTo(this.x1, this.y1);
         context.lineTo(this.x2, this.y2);
         context.moveTo(this.x2+this.r, this.y2);
         context.arc(this.x2, this.y2, this.r, 0, 2*Math.PI);
+        context.closePath();
+        context.stroke();
+
+        context.strokeStyle = oldstroke;
     }
 
     this.ding = function () {

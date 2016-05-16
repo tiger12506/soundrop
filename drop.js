@@ -11,7 +11,6 @@ var scene = {
 
 function display() {
     display_clear();
-    context.beginPath();
 
     var dead = [];
     var i;
@@ -35,8 +34,6 @@ function display() {
         scene.lines[i].draw(context);
     }
 
-    context.closePath();
-    context.stroke();
 
     hittest();
 
