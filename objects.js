@@ -44,6 +44,32 @@ function Ball(x, y, dx, dy) {
         this.dx = this.dx - 2 * dot * nx;
         this.dy = this.dy - 2 * dot * ny;
     }
+
+    this.intersects = function (line) {
+        // distance from point to line formula, derived by dot product line to point vector against line's normal direction vector
+        var d =  line.ay * this.x -  line.ax * this.y + line.x2y1y2x1;
+        d = d / line.length;
+
+        var e = line.ay * (this.x + this.dx) - line.ax * (this.y+this.dy) + line.x2y1y2x1;
+        e = e / line.length;
+
+        if (Math.abs(d) <= this.r || d * e < 0) { /* d*e < 0 if signs are different */
+            // ball is close to line, now check if within bounds of line *segment*
+
+            var bx = (this.x - line.x1);
+            var by = (this.y - line.y1);
+
+            var cx = (this.x - line.x2);
+            var cy = (this.y - line.y2);
+
+            var adotb = line.ax*bx + line.ay*by;
+            var adotc = line.ax*cx + line.ay*cy;
+
+            if (adotb > 0 && adotc < 0) return true;
+            return false;
+        }
+        return false;
+    }
 }
 
 function Dropper(x, y, interval, scene) {
@@ -88,10 +114,15 @@ function Line(x1, y1, x2, y2) {
     this.y1 = y1;
     this.y2 = y2;
     this.r = 3;
-    this.length = Math.sqrt(Math.pow(this.x2-this.x1, 2) + Math.pow(this.y2-this.y1, 2));
     this.max = canvas.width;
     this.min = 1;
     this.color = this.BASE_COLOR;
+
+    // Precomputed values
+    this.length = Math.sqrt(Math.pow(this.x2-this.x1, 2) + Math.pow(this.y2-this.y1, 2));
+    this.x2y1y2x1 = this.x2 * this.y1 - this.y2 * this.x1;
+    this.ax = (this.x2 - this.x1);
+    this.ay = (this.y2 - this.y1);
 
     this.draw = function (context) {
         var oldstroke = context.strokeStyle;
@@ -117,11 +148,8 @@ function Line(x1, y1, x2, y2) {
 }
 
 var intersects = function (x, y, line, dist) {
-    var ax = (line.x2 - line.x1);
-    var ay = (line.y2 - line.y1);
-
     // distance from point to line formula, derived by dot product line to point vector against line's normal direction vector
-    var d =  ay * x -  ax * y + line.x2 * line.y1 - line.y2 * line.x1;
+    var d =  line.ay * x -  line.ax * y + line.x2y1y2x1;
     d = Math.abs(d / line.length);
 
     if (d <= dist) {
@@ -133,8 +161,8 @@ var intersects = function (x, y, line, dist) {
         var cx = (x - line.x2);
         var cy = (y - line.y2);
 
-        var adotb = ax*bx + ay*by;
-        var adotc = ax*cx + ay*cy;
+        var adotb = line.ax*bx + line.ay*by;
+        var adotc = line.ax*cx + line.ay*cy;
 
         if (adotb > 0 && adotc < 0) return true;
         return false;

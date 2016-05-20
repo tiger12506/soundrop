@@ -50,7 +50,7 @@ function hittest() {
     var i,j;
     for (i=scene.balls.length-1; i>=0; i--) {
         for (j=scene.lines.length-1; j>=0; j--) {
-            if (intersects(scene.balls[i].x, scene.balls[i].y, scene.lines[j], scene.balls[i].r)) {
+            if (scene.balls[i].intersects(scene.lines[j])) {
                 scene.balls[i].bounceOffLine(scene.lines[j]);
                 scene.lines[j].ding();
             }
