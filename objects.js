@@ -118,11 +118,14 @@ function Line(x1, y1, x2, y2) {
     this.min = 1;
     this.color = this.BASE_COLOR;
 
-    // Precomputed values
-    this.length = Math.sqrt(Math.pow(this.x2-this.x1, 2) + Math.pow(this.y2-this.y1, 2));
-    this.x2y1y2x1 = this.x2 * this.y1 - this.y2 * this.x1;
-    this.ax = (this.x2 - this.x1);
-    this.ay = (this.y2 - this.y1);
+    this.recompute = function() {
+        // Precomputed values
+        this.length = Math.sqrt(Math.pow(this.x2-this.x1, 2) + Math.pow(this.y2-this.y1, 2));
+        this.x2y1y2x1 = this.x2 * this.y1 - this.y2 * this.x1;
+        this.ax = (this.x2 - this.x1);
+        this.ay = (this.y2 - this.y1);
+    }
+    this.recompute();
 
     this.draw = function (context) {
         var oldstroke = context.strokeStyle;

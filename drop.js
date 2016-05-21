@@ -34,7 +34,6 @@ function display() {
         scene.lines[i].draw(context);
     }
 
-
     hittest();
 
     setTimeout(display, refreshRate);
@@ -89,6 +88,7 @@ function init() {
                 lineMove.x2 -= xMove;
                 lineMove.y1 -= yMove;
                 lineMove.y2 -= yMove;
+                lineMove.recompute();
                 lineMove.color = lineMove.BASE_COLOR;
                 lineMove = null;
             }
@@ -101,7 +101,7 @@ function init() {
     };
 
     document.onmousedown = function(e) {
-        if (e.button == 0) {
+        if (e.button == 0 && !lineStart) {
             for (var i = 0; i < scene.lines.length; i++) {
                 if (intersects(e.pageX, e.pageY, scene.lines[i], thickness)) {
                     droppedPoint['x'] = e.pageX;
@@ -115,6 +115,8 @@ function init() {
     }
 
     document.ondblclick = function(e) {
+        lineStart = false;
+        lineMove = null;
         dead = [];
         for (var i = 0; i < scene.lines.length; i++) {
             if (intersects(e.pageX, e.pageY, scene.lines[i], thickness)) {
